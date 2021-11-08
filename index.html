@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<div id="wrapper">
+
+<head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G27VZVV8D0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-G27VZVV8D0');
+</script>
+
+<title>zemi no hosoku</title>
+  <meta name="vewport" content="width=device-width,initial-scale=1.0">
+  <link rel="stylesheet" href="prism.css">
+</head>
+
+<body>
+
+  
+  <script src="prism.js"></script>
+
+  <h2>このページの読み方</h2>
+  <ul>
+    <li>nihongo ga okashii toki ha google-honyaku de eigo wo sentaku suru to naoru</li>
+    <li>各コードは左端の「Copy」ボタンでクリップボードにコピーできる。</li>
+    <li>コマンドは一行づつ端末に入力して実行する。記号「$」はプロンプトを表している。「$」は入力しない。</li>
+  </ul>
+
+  <br><h2>WSL2を1にダウングレード</h2>
+  Windows PowerShell ISE を管理者で実行し、以下のコマンドを入力し実行する
+  (<a target="_blank" href="https://yoshinorin.net/2020/08/22/downgrade-wsl2-to-wsl1/">参考サイト</a>)
+
+  <pre class="line-numbers">
+  <code class="language-Shell ">
+  wsl --set-version Ubuntu-20.04 1
+  </code></pre>
+
+
+
+  <br><h2>Ubuntuのコンディションを整える</h2>
+  マシンを再起動した後、Ubuntu20.04 LTS に以下のコマンドを入力し実行する
+
+  <pre class="line-numbers">
+  <code class="language-Bash ">
+  $ sudo apt update
+  $ sudo apt upgrade
+  </code></pre>
+
+  <br><h2>SDL2をインストール</h2>
+  Ubuntu20.04 LTS に以下のコマンドを入力し実行する
+  (<a target="_blank" href="https://gist.github.com/kazz12211/f62ebac811a6205fbd245a9021942631">参考サイト</a>)
+
+  <pre class="line-numbers">
+  <code class="language-Bash ">
+  $ sudo apt-get install mercurial
+  $ hg clone https://hg.libsdl.org/SDL SDL
+  $ cd SDL
+  $ mkdir build
+  $ cd build
+  $ ../configure
+  $ sudo apt install make
+  $ make
+  $ sudo make install
+  </code></pre>
+
+  <br><h2>プログラムファイルの作成</h2>
+  作業用のディレクトリを作成、そのディレクトリの中に以下の内容のsample04.cファイルを作成
+  (<a target="_blank" href="https://k38.hatenadiary.jp/entry/2018/10/04/01033">参考サイト</a>)
+ 
+
+    <pre class="line-numbers">
+    <code class="language-C ">
+      #include &lt;SDL2 /SDL.h&gt; 
+      #include &lt;stdio.h&gt;
+  
+        const int SCREEN_WIDTH = 640;
+        const int SCREEN_HEIGHT = 480;
+  
+        int main( int argc, char* args[] ) {
+  
+        SDL_Window* window = NULL;
+        SDL_Renderer *renderer = NULL;
+  
+        //Initialize SDL
+        if( SDL_Init( SDL_INIT_VIDEO ) &lt 0 ) { 
+          printf( "SDL could not initialize! SDL_Error: %s\n" , SDL_GetError() );
+        
+        } else { 
+          //Create window 
+          window=SDL_CreateWindow( 
+            "Hello SDL", 
+            SDL_WINDOWPOS_UNDEFINED,
+            SDL_WINDOWPOS_UNDEFINED,
+            SCREEN_WIDTH, 
+            SCREEN_HEIGHT,
+            SDL_WINDOW_OPENGL
+            ); 
+
+            if( window==NULL ) {
+              printf( "Window could not be created! SDL_Error: %s\n" , SDL_GetError() ); 
+            
+            } else {
+              renderer=SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); 
+              SDL_RenderClear(renderer);
+              SDL_RenderPresent(renderer); SDL_Delay(3000);
+            }
+        }
+  
+          SDL_DestroyRenderer(renderer);
+          SDL_DestroyWindow(window);
+  
+          SDL_Quit();
+  
+          return 0;
+    }
+    </code>
+    </pre>
+
+  <br><h2>作業用ディレクトリに移動</h2>
+  homeディレクトリから直下のdemoという名前のディレクトリに移動する場合、以下のコマンドをUbuntu20.04 LTSに入力し実行する
+  <pre class="line-numbers">
+  <code class="language-Bash ">
+  $ cd demo
+  </code></pre>
+
+  
+  <br><h2>コンパイルと実行</h2>
+  Ubuntu20.04 LTS に以下のコマンドを入力し実行する
+  (<a target="_blank" href="http://sdl2referencejp.osdn.jp/index.html">参考サイト</a>)
+
+  <pre class="line-numbers">
+  <code class="language-Bash ">
+  $ gcc -g -o sample04 sample04.c `sdl2-config --cflags --libs` 
+  $ ./sample04
+  </code></pre>
+
+  <br><h2>発生している問題・エラー</h2>
+
+  <pre class="line-numbers">
+  <code class="language-Bash ">
+  SDL could not initialize! SDL_Error: No available video device
+  </code></pre>
+
+</body>
+
+</div>
+</html>
